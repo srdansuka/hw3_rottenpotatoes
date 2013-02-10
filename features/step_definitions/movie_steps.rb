@@ -58,23 +58,16 @@ Then /I should (not )?see movies rated: (.*)/ do |negation, rating_list|
   
   movies_filter_size = Movie.find(:all, :conditions => {:rating => ratings}).size
   page.has_css?('tbody tr',:count => movies_filter_size)
-  #ratings = rating_list.split(",")
-#ratings = Movie.all_ratings - ratings if negation
-#  db_size = filtered_movies = Movie.find(:all, :conditions => {:rating => ratings}).size
-#  page.find(:xpath, "//table[@id=\"movies\"]/tbody[count(tr) = #{db_size} ]")
 end
 
 
 Then /I should see (.*) of the movies/ do |count|
   all_movies = Movie.find(:all).length
   if count == "none" or count == 0
-#    page.should have_no_css("#movielist tr")
     page.has_css?('tbody tr',:count => 0)
   elsif count == "all" or count == all_movies
-#    page.should have_selector("table 1tr", :count => allsize)
     page.has_css?('tbody tr',:count => all_movies)
   else
-#    page.should have_selector("table tr", :count => count)
     page.has_css?('tbody tr',:count => count)
   end
 end
