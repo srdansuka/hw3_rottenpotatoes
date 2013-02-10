@@ -50,12 +50,12 @@ When /I (un)?check all the ratings$/ do |uncheck|
 end
 
 Then /I should (not )?see movies rated: (.*)/ do |negation, rating_list|
-  if negation
-    ratings = Movie.all_ratings - rating_list.split(",")
-  else
+#  if negation
+#    ratings = Movie.all_ratings - rating_list.split(",")
+#  else
 #    ratings = Movie.all_ratings
     ratings = rating_list.split(",")
-  end
+#  end
   
   movies_filter_size = Movie.find(:all, :conditions => {:rating => ratings}).size
   page.has_css?('tbody tr',:count => movies_filter_size)
