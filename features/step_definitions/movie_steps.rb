@@ -28,7 +28,7 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
   # HINT: use String#split to split up the rating_list, then
   #   iterate over the ratings and reuse the "When I check..." or
   #   "When I uncheck..." steps in lines 89-95 of web_steps.rb
-  rating_list.split(", ").each do | rating |
+  rating_list.split(",").each do | rating |
     rating = "ratings_" + rating
     if uncheck
       uncheck(rating)
@@ -38,7 +38,7 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
   end
 end
 
-When /^I (un)?check all the ratings$/ do |uncheck|
+When /I (un)?check all the ratings$/ do |uncheck|
   Movie.all_ratings.each do |rating|
     rating = "ratings_" + rating
     if uncheck
@@ -51,9 +51,10 @@ end
 
 Then /I should (not )?see movies rated: (.*)/ do |negation, rating_list|
   if negation
-    ratings = Movie.all_ratings - rating_list.split(", ")
+    ratings = Movie.all_ratings - rating_list.split(",")
   else
-    ratings = Movie.all_ratings
+#    ratings = Movie.all_ratings
+    ratings = rating_list.split(",")
   end
   
   movies_filter_size = Movie.find(:all, :conditions => {:rating => ratings}).size
