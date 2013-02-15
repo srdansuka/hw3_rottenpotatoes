@@ -50,15 +50,23 @@ When /I (un)?check all the ratings$/ do |uncheck|
 end
 
 Then /I should (not )?see movies rated: (.*)/ do |negation, rating_list|
-#  if negation
-#    ratings = Movie.all_ratings - rating_list.split(",")
-#  else
-#    ratings = Movie.all_ratings
-    ratings = rating_list.split(",")
-#  end
-  
-  movies_filter_size = Movie.find(:all, :conditions => {:rating => ratings}).size
-  page.has_css?('tbody tr',:count => movies_filter_size)
+  rating_list.split(",").each do |rating|
+#    rating = "ratings_" + rating
+#    puts rating
+    if negation
+      if page.respond_to? :should
+        page.should have_no_xpath("//table[@id='#movies']/tbody/tr/td[2]", :text => rating)
+      else
+        assert page.has_no_xpath?("//table[@id='#movies']/tbody/tr/td[2]", :text => rating)
+      end
+    else
+      if page.respond_to? :should
+        page.should have_no_xpath("//table[@id='#movies']/tbody/tr/td[2]", :text => rating)
+      else
+        assert page.has_no_xpath?("//table[@id='#movies']/tbody/tr/td[2]", :text => rating)
+      end
+    end
+  end
 end
 
 
